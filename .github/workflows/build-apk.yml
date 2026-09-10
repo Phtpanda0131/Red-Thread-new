@@ -21,21 +21,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Setup Gradle 8.5
-        uses: gradle/actions/setup-gradle@v3
+      - name: Setup Gradle 8.6
+        uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.5'
+          gradle-version: '8.6'
+          cache-disabled: true
 
       - name: Build Debug APK
         run: |
-          cd android
+          if [ -d "android" ]; then
+            cd android
+          fi
           gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: red-threads-widget.apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: red-threads-widget-apk
+          path: "**/app-debug.apk"
